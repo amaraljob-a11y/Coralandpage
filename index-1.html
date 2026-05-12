@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cora Assessoria Comercial | Estrutura comercial que gera resultado</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #130e07;
+      --bg2:         #1c1409;
+      --bg3:         #251a0d;
+      --gold:        #c4935a;
+      --gold-light:  #ddb882;
+      --gold-pale:   #f0d9b5;
+      --cream:       #f0e6d3;
+      --cream-light: #faf5ed;
+      --muted:       #c2aa90;
+      --muted-dark:  #8a7260;
+      --border:      rgba(196,147,90,0.15);
+      --border-hover:rgba(196,147,90,0.4);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* NOISE */
+    body::after {
+      content:'';
+      position:fixed;
+      inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity:.03;
+      pointer-events:none;
+      z-index:999;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 6vw;
+      background: rgba(19,14,7,0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--cream-light);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      letter-spacing: 0.06em;
+    }
+    .nav-logo .h { color: var(--gold); }
+
+    .nav-btn {
+      background: var(--gold);
+      color: var(--bg);
+      padding: 10px 24px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background .25s;
+    }
+    .nav-btn:hover { background: var(--gold-light); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 6vw 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 55% 55% at 75% 20%, rgba(196,147,90,0.08) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 60% at 10% 90%, rgba(37,26,13,0.7) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(196,147,90,0.1);
+      border: 1px solid var(--border);
+      padding: 7px 16px;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 32px;
+      width: fit-content;
+      opacity: 0;
+      animation: fadeUp .7s ease forwards .1s;
+    }
+
+    .hero-badge::before { content: '●'; font-size: .5rem; }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      line-height: 1.08;
+      font-weight: 500;
+      color: var(--cream-light);
+      max-width: 820px;
+      opacity: 0;
+      animation: fadeUp .8s ease forwards .25s;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      color: var(--muted);
+      max-width: 560px;
+      margin-top: 24px;
+      line-height: 1.75;
+      opacity: 0;
+      animation: fadeUp .8s ease forwards .4s;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 44px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp .8s ease forwards .55s;
+    }
+
+    .btn-cta {
+      background: var(--gold);
+      color: var(--bg);
+      padding: 17px 36px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background .25s, transform .2s;
+      display: inline-block;
+    }
+    .btn-cta:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 16px 28px;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      transition: border-color .25s, color .25s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--cream); }
+
+    .hero-proof {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      margin-top: 56px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp .8s ease forwards .7s;
+    }
+
+    .proof-item { display: flex; flex-direction: column; gap: 3px; }
+    .proof-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--gold-light);
+      font-weight: 400;
+    }
+    .proof-label { font-size: 0.72rem; color: var(--muted-dark); letter-spacing: 0.1em; text-transform: uppercase; }
+    .proof-sep { width: 1px; height: 36px; background: var(--border); }
+
+    /* ── SEÇÃO BASE ── */
+    .section {
+      padding: 100px 6vw;
+      position: relative;
+    }
+
+    .section-alt { background: var(--bg2); }
+    .section-dark { background: var(--bg3); }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      line-height: 1.18;
+      font-weight: 400;
+      color: var(--cream-light);
+      max-width: 640px;
+    }
+
+    .section-title em { font-style: italic; color: var(--gold-light); }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin-top: 16px;
+      line-height: 1.75;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border), transparent);
+    }
+
+    /* ── DOR ── */
+    .dor-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border);
+      margin-top: 56px;
+    }
+
+    .dor-card {
+      background: var(--bg2);
+      padding: 36px 30px;
+      transition: background .3s;
+    }
+    .dor-card:hover { background: var(--bg3); }
+
+    .dor-icon {
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+      opacity: .7;
+    }
+
+    .dor-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--cream);
+      margin-bottom: 10px;
+      font-weight: 400;
+    }
+
+    .dor-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── SOLUÇÃO ── */
+    .solucao-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      margin-top: 56px;
+    }
+
+    .solucao-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .solucao-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 24px;
+      border: 1px solid var(--border);
+      transition: border-color .3s;
+    }
+    .solucao-item:hover { border-color: var(--border-hover); }
+
+    .solucao-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--gold);
+      min-width: 28px;
+      font-weight: 400;
+    }
+
+    .solucao-text-title {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--cream-light);
+      margin-bottom: 4px;
+    }
+
+    .solucao-text-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .solucao-destaque {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 48px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .destaque-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--cream-light);
+      line-height: 1.3;
+      font-style: italic;
+    }
+
+    .destaque-body {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .destaque-cta {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--bg);
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background .25s;
+      width: fit-content;
+    }
+    .destaque-cta:hover { background: var(--gold-light); }
+
+    /* ── BENEFÍCIOS ── */
+    .benef-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 56px;
+    }
+
+    .benef-card {
+      padding: 36px 28px;
+      border: 1px solid var(--border);
+      position: relative;
+      transition: border-color .3s, background .3s;
+      overflow: hidden;
+    }
+
+    .benef-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity .4s;
+    }
+    .benef-card:hover { border-color: var(--border-hover); background: rgba(255,255,255,.02); }
+    .benef-card:hover::before { opacity: 1; }
+
+    .benef-icon {
+      font-size: 1.5rem;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+
+    .benef-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--cream-light);
+      margin-bottom: 10px;
+      font-weight: 400;
+    }
+
+    .benef-desc {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── PROVA SOCIAL ── */
+    .numeros-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      background: var(--border);
+      margin-top: 56px;
+      margin-bottom: 64px;
+    }
+
+    .numero-card {
+      background: var(--bg2);
+      padding: 40px 28px;
+      text-align: center;
+    }
+
+    .numero-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      color: var(--gold-light);
+      font-weight: 400;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .numero-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.5;
+    }
+
+    .depo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .depo-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .depo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--cream);
+      line-height: 1.65;
+      font-style: italic;
+    }
+
+    .depo-autor {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .depo-nome {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--cream-light);
+    }
+
+    .depo-cargo {
+      font-size: 0.75rem;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── PROCESSO ── */
+    .processo-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2px;
+      background: var(--border);
+      margin-top: 56px;
+      position: relative;
+    }
+
+    .processo-step {
+      background: var(--bg2);
+      padding: 36px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: background .3s;
+    }
+    .processo-step:hover { background: var(--bg3); }
+
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: rgba(196,147,90,0.2);
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .step-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--cream-light);
+      letter-spacing: 0.04em;
+    }
+
+    .step-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── CTA FINAL ── */
+    #cta-final {
+      padding: 120px 6vw;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #cta-final::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(196,147,90,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .cta-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4.5vw, 3.6rem);
+      line-height: 1.12;
+      color: var(--cream-light);
+      max-width: 640px;
+      margin: 0 auto 20px;
+    }
+
+    .cta-title em { font-style: italic; color: var(--gold-light); }
+
+    .cta-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 440px;
+      margin: 0 auto 48px;
+      line-height: 1.75;
+    }
+
+    .cta-contact {
+      margin-top: 24px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .cta-contact a {
+      color: var(--gold-light);
+      text-decoration: none;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 6vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: var(--muted-dark);
+    }
+
+    .footer-copy {
+      font-size: 0.78rem;
+      color: var(--muted-dark);
+    }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── TABLET ── */
+    @media (max-width: 1024px) {
+      .dor-grid       { grid-template-columns: repeat(2, 1fr); }
+      .benef-grid     { grid-template-columns: repeat(2, 1fr); }
+      .numeros-grid   { grid-template-columns: repeat(2, 1fr); }
+      .processo-grid  { grid-template-columns: repeat(3, 1fr); }
+      .solucao-wrap   { grid-template-columns: 1fr; gap: 40px; }
+      .depo-grid      { grid-template-columns: 1fr; }
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 5vw; background: rgba(19,14,7,1); }
+      .nav-logo { font-size: 0.95rem; }
+      .nav-btn  { padding: 9px 18px; font-size: 0.72rem; }
+
+      #hero { padding: 90px 5vw 60px; min-height: 100svh; justify-content: flex-end; }
+      .hero-badge { font-size: 0.65rem; padding: 6px 12px; }
+      .hero-title { font-size: clamp(2rem, 9vw, 2.8rem); }
+      .hero-sub   { font-size: 0.98rem; margin-top: 20px; }
+      .hero-actions { flex-direction: column; align-items: stretch; margin-top: 32px; gap: 14px; }
+      .btn-cta    { text-align: center; padding: 16px; }
+      .btn-outline { text-align: center; padding: 15px; }
+      .hero-proof { gap: 20px; margin-top: 40px; padding-top: 28px; }
+      .proof-num  { font-size: 1.3rem; }
+      .proof-sep  { display: none; }
+
+      .section { padding: 64px 5vw; }
+
+      .dor-grid     { grid-template-columns: 1fr; }
+      .benef-grid   { grid-template-columns: 1fr; }
+      .numeros-grid { grid-template-columns: repeat(2, 1fr); }
+      .processo-grid{ grid-template-columns: repeat(2, 1fr); }
+      .depo-grid    { grid-template-columns: 1fr; }
+      .solucao-wrap { grid-template-columns: 1fr; gap: 32px; }
+      .solucao-destaque { padding: 32px 24px; }
+
+      .section-title { font-size: clamp(1.6rem, 7vw, 2.2rem); }
+
+      #cta-final { padding: 72px 5vw; }
+      .cta-title { font-size: clamp(1.7rem, 7vw, 2.4rem); }
+      .btn-cta   { width: 100%; text-align: center; }
+
+      footer { flex-direction: column; align-items: flex-start; padding: 28px 5vw; gap: 6px; }
+    }
+
+    /* ── DESKTOP LARGO ── */
+    @media (min-width: 1400px) {
+      nav       { padding: 24px 8vw; }
+      #hero     { padding: 120px 8vw 80px; }
+      .section  { padding: 120px 8vw; }
+      #cta-final{ padding: 140px 8vw; }
+      footer    { padding: 36px 8vw; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><span class="h">♥</span> Cora Assessoria</div>
+  <a href="https://wa.me/5521971399184?text=Olá%2C%20vim%20pelo%20site%20da%20Cora%20e%20quero%20conversar." class="nav-btn" target="_blank">Fale conosco</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-glow"></div>
+
+  <div class="hero-badge">Assessoria Comercial · Rio de Janeiro</div>
+
+  <h1 class="hero-title">
+    Sua empresa perde vendas<br>
+    todos os dias por falta de<br>
+    <em>estrutura comercial.</em>
+  </h1>
+
+  <p class="hero-sub">
+    A Cora assume sua operação comercial de ponta a ponta. Prospecção, proposta e gestão de clientes. Sem contratação CLT, sem burocracia, com resultado desde a primeira semana.
+  </p>
+
+  <div class="hero-actions">
+    <a href="https://wa.me/5521971399184?text=Olá%2C%20vim%20pelo%20site%20da%20Cora%20e%20quero%20estruturar%20meu%20comercial." class="btn-cta" target="_blank">Quero estruturar meu comercial</a>
+    <a href="https://wa.me/5521971399184?text=Olá%2C%20vim%20pelo%20site%20da%20Cora%20e%20quero%20entender%20como%20funciona%20a%20assessoria%20comercial." class="btn-outline" target="_blank">Ver como funciona</a>
+  </div>
+
+  <div class="hero-proof">
+    <div class="proof-item">
+      <span class="proof-num">+30</span>
+      <span class="proof-label">Empresas atendidas</span>
+    </div>
+    <div class="proof-sep"></div>
+    <div class="proof-item">
+      <span class="proof-num">1ª</span>
+      <span class="proof-label">Semana já gera resultado</span>
+    </div>
+    <div class="proof-sep"></div>
+    <div class="proof-item">
+      <span class="proof-num">Zero</span>
+      <span class="proof-label">Risco trabalhista</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── DOR ── -->
+<section class="section section-alt">
+  <div class="reveal">
+    <p class="section-label">O problema real</p>
+    <h2 class="section-title">Você reconhece alguma dessas situações?</h2>
+    <p class="section-sub">A maioria das empresas perde dinheiro não por falta de produto. Por falta de processo comercial.</p>
+  </div>
+
+  <div class="dor-grid">
+    <div class="dor-card reveal">
+      <div class="dor-icon">◎</div>
+      <h3 class="dor-title">Vendedor contratado que não entrega</h3>
+      <p class="dor-desc">Alto custo fixo, meses de onboarding e resultado abaixo do esperado. O risco é todo seu.</p>
+    </div>
+    <div class="dor-card reveal" style="transition-delay:.08s">
+      <div class="dor-icon">◈</div>
+      <h3 class="dor-title">Processo comercial inexistente</h3>
+      <p class="dor-desc">Cada venda depende do humor do dia. Sem funil, sem cadência, sem previsibilidade de receita.</p>
+    </div>
+    <div class="dor-card reveal" style="transition-delay:.16s">
+      <div class="dor-icon">◇</div>
+      <h3 class="dor-title">Oportunidades caindo no esquecimento</h3>
+      <p class="dor-desc">Leads que chegaram, foram esquecidos. Follow-up que não aconteceu. Vendas que poderiam ter fechado.</p>
+    </div>
+    <div class="dor-card reveal" style="transition-delay:.24s">
+      <div class="dor-icon">◉</div>
+      <h3 class="dor-title">Propostas que não fecham</h3>
+      <p class="dor-desc">Apresentações amadoras que não comunicam valor. O cliente some depois da reunião e você não sabe por quê.</p>
+    </div>
+    <div class="dor-card reveal" style="transition-delay:.32s">
+      <div class="dor-icon">◐</div>
+      <h3 class="dor-title">Carteira parada, sem recorrência</h3>
+      <p class="dor-desc">Clientes que compraram uma vez e sumiram. Nenhuma estratégia de relacionamento para trazer de volta.</p>
+    </div>
+    <div class="dor-card reveal" style="transition-delay:.4s">
+      <div class="dor-icon">◑</div>
+      <h3 class="dor-title">Fundador fazendo tudo sozinho</h3>
+      <p class="dor-desc">Você vende, entrega, administra e ainda tenta prospectar. O crescimento trava porque tudo passa por uma pessoa.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── SOLUÇÃO ── -->
+<section class="section" id="solucao">
+  <div class="reveal">
+    <p class="section-label">Como resolvemos</p>
+    <h2 class="section-title">Assessoria comercial completa.<br><em>Sem o peso de uma contratação.</em></h2>
+  </div>
+
+  <div class="solucao-wrap">
+    <div class="solucao-list">
+      <div class="solucao-item reveal">
+        <span class="solucao-num">01</span>
+        <div>
+          <p class="solucao-text-title">Prospecção estratégica</p>
+          <p class="solucao-text-desc">Mapeamos os clientes certos, construímos abordagens personalizadas e geramos oportunidades reais. Sem spam, sem volume vazio.</p>
+        </div>
+      </div>
+      <div class="solucao-item reveal" style="transition-delay:.08s">
+        <span class="solucao-num">02</span>
+        <div>
+          <p class="solucao-text-title">Propostas que vendem</p>
+          <p class="solucao-text-desc">Construímos propostas com clareza, argumentação de valor e visual profissional. Seu cliente entende o porquê de escolher você.</p>
+        </div>
+      </div>
+      <div class="solucao-item reveal" style="transition-delay:.16s">
+        <span class="solucao-num">03</span>
+        <div>
+          <p class="solucao-text-title">Gestão do funil e follow-up</p>
+          <p class="solucao-text-desc">Nenhuma oportunidade cai no esquecimento. Acompanhamos cada lead até o fechamento com cadência e critério.</p>
+        </div>
+      </div>
+      <div class="solucao-item reveal" style="transition-delay:.24s">
+        <span class="solucao-num">04</span>
+        <div>
+          <p class="solucao-text-title">Relacionamento e recorrência</p>
+          <p class="solucao-text-desc">Clientes ativos bem cuidados compram de novo. Estruturamos o pós-venda para gerar recorrência e indicação.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="solucao-destaque reveal" style="transition-delay:.1s">
+      <p class="destaque-title">A diferença entre ter um vendedor e ter uma estrutura comercial.</p>
+      <p class="destaque-body">Vendedor depende de humor, comissão e gestão constante. Estrutura comercial funciona com processo, método e acompanhamento próximo. É exatamente isso que a Cora entrega.</p>
+      <p class="destaque-body">Sem CLT, sem encargos, sem meses de ramp-up. Você paga por resultado, não por presença.</p>
+      <a href="https://wa.me/5521971399184?text=Olá%2C%20vim%20pelo%20site%20da%20Cora%20e%20quero%20saber%20mais%20sobre%20a%20assessoria%20comercial." class="destaque-cta" target="_blank">Quero saber mais</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── BENEFÍCIOS ── -->
+<section class="section section-dark">
+  <div class="reveal">
+    <p class="section-label">O que você ganha</p>
+    <h2 class="section-title">Benefícios concretos.<br><em>Não promessas.</em></h2>
+  </div>
+
+  <div class="benef-grid">
+    <div class="benef-card reveal">
+      <div class="benef-icon">↑</div>
+      <h3 class="benef-title">Mais vendas, mais rápido</h3>
+      <p class="benef-desc">Processo estruturado encurta o ciclo de vendas e aumenta a taxa de conversão desde as primeiras semanas.</p>
+    </div>
+    <div class="benef-card reveal" style="transition-delay:.07s">
+      <div class="benef-icon">◎</div>
+      <h3 class="benef-title">Custo previsível e justo</h3>
+      <p class="benef-desc">Sem surpresa no fim do mês. Você sabe exatamente o que paga e o que recebe em troca.</p>
+    </div>
+    <div class="benef-card reveal" style="transition-delay:.14s">
+      <div class="benef-icon">♥</div>
+      <h3 class="benef-title">Presença próxima, sempre</h3>
+      <p class="benef-desc">Você fala direto com quem executa. Sem intermediário, sem repassar contexto toda semana.</p>
+    </div>
+    <div class="benef-card reveal" style="transition-delay:.21s">
+      <div class="benef-icon">◈</div>
+      <h3 class="benef-title">Autoridade no mercado</h3>
+      <p class="benef-desc">Materiais, propostas e abordagem profissional posicionam sua empresa como referência no segmento.</p>
+    </div>
+    <div class="benef-card reveal" style="transition-delay:.28s">
+      <div class="benef-icon">◇</div>
+      <h3 class="benef-title">Zero risco trabalhista</h3>
+      <p class="benef-desc">Sem FGTS, sem 13º, sem rescisão. A relação é comercial, limpa e sem passivo jurídico.</p>
+    </div>
+    <div class="benef-card reveal" style="transition-delay:.35s">
+      <div class="benef-icon">◉</div>
+      <h3 class="benef-title">Liberdade para crescer</h3>
+      <p class="benef-desc">Com o comercial funcionando, você volta a fazer o que só você pode fazer: liderar, criar e decidir.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PROVA SOCIAL ── -->
+<section class="section section-alt">
+  <div class="reveal">
+    <p class="section-label">Resultados reais</p>
+    <h2 class="section-title">Empresas que estruturaram<br>seu comercial com a Cora.</h2>
+  </div>
+
+  <div class="numeros-grid">
+    <div class="numero-card reveal">
+      <div class="numero-val">+30</div>
+      <div class="numero-label">Empresas atendidas</div>
+    </div>
+    <div class="numero-card reveal" style="transition-delay:.08s">
+      <div class="numero-val">7 dias</div>
+      <div class="numero-label">Para gerar as primeiras oportunidades</div>
+    </div>
+    <div class="numero-card reveal" style="transition-delay:.16s">
+      <div class="numero-val">R$0</div>
+      <div class="numero-label">Em encargos trabalhistas</div>
+    </div>
+    <div class="numero-card reveal" style="transition-delay:.24s">
+      <div class="numero-val">100%</div>
+      <div class="numero-label">Foco em resultado, não em presença</div>
+    </div>
+  </div>
+
+  <div class="depo-grid">
+    <div class="depo-card reveal">
+      <p class="depo-text">"Tentei contratar dois vendedores antes de encontrar a Cora. Gastei mais, demorei mais e vendi menos. Com a assessoria, a primeira proposta fechou na segunda semana."</p>
+      <div class="depo-autor">
+        <span class="depo-nome">Rafael M.</span>
+        <span class="depo-cargo">Fundador · Empresa de tecnologia</span>
+      </div>
+    </div>
+    <div class="depo-card reveal" style="transition-delay:.1s">
+      <p class="depo-text">"O que mais me surpreendeu foi a velocidade. Em menos de 30 dias o funil estava montado, as abordagens rodando e o pipeline cheio. Nunca tivemos isso antes."</p>
+      <div class="depo-autor">
+        <span class="depo-nome">Camila R.</span>
+        <span class="depo-cargo">CEO · Clínica de saúde</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PROCESSO ── -->
+<section class="section">
+  <div class="reveal">
+    <p class="section-label">Como trabalhamos</p>
+    <h2 class="section-title">Do diagnóstico ao resultado.<br><em>Em cinco etapas simples.</em></h2>
+  </div>
+
+  <div class="processo-grid">
+    <div class="processo-step reveal">
+      <div class="step-num">01</div>
+      <p class="step-title">Diagnóstico</p>
+      <p class="step-desc">Entendemos seu negócio, seu mercado e onde estão as maiores oportunidades comerciais.</p>
+    </div>
+    <div class="processo-step reveal" style="transition-delay:.08s">
+      <div class="step-num">02</div>
+      <p class="step-title">Estratégia</p>
+      <p class="step-desc">Definimos ICP, proposta de valor, canais de abordagem e cadência comercial.</p>
+    </div>
+    <div class="processo-step reveal" style="transition-delay:.16s">
+      <div class="step-num">03</div>
+      <p class="step-title">Execução</p>
+      <p class="step-desc">Prospecção ativa, propostas e negociação. O time da Cora entra em campo com o seu nome.</p>
+    </div>
+    <div class="processo-step reveal" style="transition-delay:.24s">
+      <div class="step-num">04</div>
+      <p class="step-title">Gestão</p>
+      <p class="step-desc">Funil organizado, follow-up estruturado e acompanhamento de cada oportunidade aberta.</p>
+    </div>
+    <div class="processo-step reveal" style="transition-delay:.32s">
+      <div class="step-num">05</div>
+      <p class="step-title">Resultado</p>
+      <p class="step-desc">Mais vendas, mais recorrência e um comercial que funciona sem depender de você.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── CTA FINAL ── -->
+<section id="cta-final">
+  <p class="cta-eyebrow reveal">Próximo passo</p>
+  <h2 class="cta-title reveal" style="transition-delay:.08s">
+    Agende uma conversa.<br>
+    <em>Diagnóstico gratuito.</em>
+  </h2>
+  <p class="cta-sub reveal" style="transition-delay:.16s">
+    30 minutos para entender onde seu comercial está perdendo dinheiro e o que fazer para mudar isso.
+  </p>
+  <a href="https://wa.me/5521971399184?text=Olá%2C%20vim%20pelo%20site%20da%20Cora%20e%20quero%20agendar%20um%20diagnóstico%20gratuito."
+     class="btn-cta reveal"
+     style="transition-delay:.24s"
+     target="_blank">
+    Agendar diagnóstico gratuito
+  </a>
+  <p class="cta-contact reveal" style="transition-delay:.32s">
+    <a href="tel:+5521971399184">(21) 97139-9184</a>
+  </p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-logo">♥ Cora Assessoria</p>
+  <p class="footer-copy">Rio de Janeiro, Brasil · 2026</p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
